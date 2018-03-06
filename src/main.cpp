@@ -61,7 +61,7 @@ void mySQLBackup( const char* host, const char* user, const char* password, cons
 			{
 				std::cout << "   "
 					<< (fields[columnNameIndex].name ? fields[columnNameIndex].name : "null")
-					<< ", " << typeAsString(fields[columnNameIndex].type)
+					<< ", " << cppsql::typeAsString(fields[columnNameIndex].type)
 					<< ", " << fields[columnNameIndex].length
 					<< ", " << fields[columnNameIndex].max_length
 					<< "\n";
