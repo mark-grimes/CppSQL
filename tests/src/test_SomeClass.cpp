@@ -1,11 +1,11 @@
-#include "REPLACEME_PROJECT_NAMESPACE/SomeClass.h"
+#include "cppsql/SomeClass.h"
 #include "catch.hpp"
 
-SCENARIO( "Test that REPLACEME_PROJECT_NAMESPACE/SomeClass gives the correct values", "[SomeClass]" )
+SCENARIO( "Test that cppsql/SomeClass gives the correct values", "[SomeClass]" )
 {
 	GIVEN( "An instance of SomeClass" )
 	{
-		REPLACEME_PROJECT_NAMESPACE::SomeClass anInstance;
+		cppsql::SomeClass anInstance;
 
 		WHEN( "Testing the result of someResult" )
 		{

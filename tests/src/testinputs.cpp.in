@@ -1,4 +1,4 @@
-#include "REPLACEME_PROJECT_TESTS_NAMESPACE/testinputs.h"
+#include "cppsqltests/testinputs.h"
 
-const std::string REPLACEME_PROJECT_TESTS_NAMESPACE::testinputs::testFileDirectory="@CMAKE_SOURCE_DIR@/tests/testdata/";
+const std::string cppsqltests::testinputs::testFileDirectory="@CMAKE_SOURCE_DIR@/tests/testdata/";
 

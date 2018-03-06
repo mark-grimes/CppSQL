@@ -1,10 +1,10 @@
 /** @file Information required by all tests (locations of input files etcetera). */
 #include <string>
 
-namespace REPLACEME_PROJECT_TESTS_NAMESPACE
+namespace cppsqltests
 {
 	struct testinputs
 	{
 		static const std::string testFileDirectory;
 	};
-} // end of namespace REPLACEME_PROJECT_TESTS_NAMESPACE
+} // end of namespace cppsqltests

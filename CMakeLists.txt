@@ -1,12 +1,12 @@
 #
-# CMake file to build REPLACEME_PROJECT_NAME.
+# CMake file to build CppSQL.
 # Mark Grimes (mark.grimes@rymapt.com)
-# 06/Oct/2017
-# copyright 2017 Rymapt Ltd
+# 06/Mar/2018
+# copyright 2018 Rymapt Ltd
 # Licence to be decided
 #
 
-project( REPLACEME_PROJECT_NAME )
+project( CppSQL )
 
 cmake_minimum_required(VERSION 2.8)
 
@@ -16,8 +16,8 @@ endif()
 
 
 # Create the file that has the version information and git hash
-execute_process( COMMAND git describe --dirty --always --tags WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} OUTPUT_VARIABLE REPLACEME_PROJECT_NAME_GIT_DESCRIBE OUTPUT_STRIP_TRAILING_WHITESPACE )
-execute_process( COMMAND git log -1 --pretty=format:%H WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} OUTPUT_VARIABLE REPLACEME_PROJECT_NAME_GIT_HASH OUTPUT_STRIP_TRAILING_WHITESPACE )
+execute_process( COMMAND git describe --dirty --always --tags WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} OUTPUT_VARIABLE CppSQL_GIT_DESCRIBE OUTPUT_STRIP_TRAILING_WHITESPACE )
+execute_process( COMMAND git log -1 --pretty=format:%H WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} OUTPUT_VARIABLE CppSQL_GIT_HASH OUTPUT_STRIP_TRAILING_WHITESPACE )
 add_custom_target( CreateVersionFile ALL ${CMAKE_COMMAND} -E touch "${CMAKE_SOURCE_DIR}/src/version.cpp.in" ) # Make sure the git hash is always checked (not just at configure time)
 configure_file( "${CMAKE_SOURCE_DIR}/src/version.cpp.in" "${CMAKE_BINARY_DIR}/src/version.cpp" )
 

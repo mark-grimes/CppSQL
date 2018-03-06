@@ -1,9 +1,9 @@
-#ifndef INCLUDEGUARD_REPLACEME_PROJECT_NAMESPACE_SomeClass_h
-#define INCLUDEGUARD_REPLACEME_PROJECT_NAMESPACE_SomeClass_h
+#ifndef INCLUDEGUARD_cppsql_SomeClass_h
+#define INCLUDEGUARD_cppsql_SomeClass_h
 
 #include <string>
 
-namespace REPLACEME_PROJECT_NAMESPACE
+namespace cppsql
 {
 	/** @brief A pointless class to make sure the bare skeleton project will compile
 	 *
@@ -16,6 +16,6 @@ namespace REPLACEME_PROJECT_NAMESPACE
 		std::string someValue() const;
 	};
 
-} // end of namespace REPLACEME_PROJECT_NAMESPACE
+} // end of namespace cppsql
 
 #endif

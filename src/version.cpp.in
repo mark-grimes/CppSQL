@@ -1,4 +1,4 @@
-#include "REPLACEME_PROJECT_NAMESPACE/version.h"
+#include "cppsql/version.h"
 
-const char* REPLACEME_PROJECT_NAMESPACE::version::GitDescribe="${REPLACEME_PROJECT_NAME_GIT_DESCRIBE}";
-const char REPLACEME_PROJECT_NAMESPACE::version::GitHash[41]="${REPLACEME_PROJECT_NAME_GIT_HASH}";
+const char* cppsql::version::GitDescribe="${CppSQL_GIT_DESCRIBE}";
+const char cppsql::version::GitHash[41]="${CppSQL_GIT_HASH}";
