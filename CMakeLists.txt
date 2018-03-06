@@ -26,7 +26,13 @@ include_directories( "${CMAKE_SOURCE_DIR}/include" )
 aux_source_directory( "${CMAKE_SOURCE_DIR}/src" library_sources )
 list( REMOVE_ITEM library_sources "${CMAKE_SOURCE_DIR}/src/main.cpp" ) # main.cpp belongs only in the executable
 
+# Add dependencies
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
+find_package( MYSQL REQUIRED )
+include_directories( ${MYSQL_INCLUDE_DIRS} )
+
 add_library( ${PROJECT_NAME}_LIB STATIC ${library_sources} "${CMAKE_BINARY_DIR}/src/version.cpp" )
+target_link_libraries( ${PROJECT_NAME}_LIB "sqlite3" ${MYSQL_LIBRARIES} )
 add_executable( ${PROJECT_NAME} "${CMAKE_SOURCE_DIR}/src/main.cpp" )
 target_link_libraries( ${PROJECT_NAME} ${PROJECT_NAME}_LIB )
 ## Uncomment this if you get "undefined reference to `pthread_create'" when using std::thread
