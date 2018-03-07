@@ -31,7 +31,8 @@ void cppsql::SQLiteDatabase::execute_( const char* pCommand, void* userCallback 
 	//std::cout << "Executing command " << pCommand << std::endl;
 	char* pErrorMsg=0;
 	int result=sqlite3_exec( pDatabase_, pCommand, (userCallback ? callback_ : nullptr), userCallback, &pErrorMsg );
-	if( result!=SQLITE_OK )
+	if( result==SQLITE_ABORT && userCallback!=nullptr ) return; // User returned false from callback to stop processing
+	else if( result!=SQLITE_OK )
 	{
 		std::string errorMessage(pErrorMsg);
 		sqlite3_free( pErrorMsg );
