@@ -13,7 +13,7 @@ namespace cppsql
 		MySQLResult( MYSQL_RES* pResult );
 		~MySQLResult();
 		int numberOfFields();
-		void showResults( std::function<bool(int,int,char*,char*)> resultsCallback );
+		void showResults( std::function<bool(int,const char* const[],const char* const[])> resultsCallback );
 		operator MYSQL_RES*() { return pResult_; }
 	private:
 		MYSQL_RES* pResult_;
