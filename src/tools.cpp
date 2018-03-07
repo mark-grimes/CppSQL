@@ -1,7 +1,7 @@
 #include "cppsql/tools.h"
 #include <stdexcept>
 
-const char* cppsql::sqlTypeString( const MYSQL_FIELD& field )
+const char* cppsql::mySqlTypeString( const MYSQL_FIELD& field )
 {
 	switch( field.type )
 	{
@@ -28,7 +28,7 @@ const char* cppsql::sqlTypeString( const MYSQL_FIELD& field )
 	}
 }
 
-void cppsql::bindToSQLite( const MYSQL_BIND& bind, SQLiteStatement& statement, const int fieldNumber )
+void cppsql::bindMySQLToSQLite( const MYSQL_BIND& bind, SQLiteStatement& statement, const int fieldNumber )
 {
 	switch( bind.buffer_type )
 	{
@@ -51,11 +51,11 @@ void cppsql::bindToSQLite( const MYSQL_BIND& bind, SQLiteStatement& statement, c
 		//case MYSQL_TYPE_MEDIUM_BLOB: stream << (char*)buffer.bind_.buffer; break;//stream << (char[]*)buffer.bind_.buffer; break;
 		//case MYSQL_TYPE_LONG_BLOB: stream << (char*)buffer.bind_.buffer; break;//stream << (char[]*)buffer.bind_.buffer; break;
 		//case MYSQL_TYPE_BIT: stream << (char*)buffer.bind_.buffer; break;//stream << (char[]*)buffer.bind_.buffer; break;
-		default: throw std::runtime_error("Unable to bind SQLite parameter to MySQL result "+std::string(cppsql::typeAsString(bind.buffer_type)));
+		default: throw std::runtime_error("Unable to bind SQLite parameter to MySQL result "+std::string(cppsql::mySQLTypeAsString(bind.buffer_type)));
 	}
 }
 
-const char* cppsql::typeAsString( int type )
+const char* cppsql::mySQLTypeAsString( int type )
 {
 	switch( type )
 	{

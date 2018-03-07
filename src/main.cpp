@@ -61,7 +61,7 @@ void mySQLBackup( const char* host, const char* user, const char* password, cons
 			{
 				std::cout << "   "
 					<< (fields[columnNameIndex].name ? fields[columnNameIndex].name : "null")
-					<< ", " << cppsql::typeAsString(fields[columnNameIndex].type)
+					<< ", " << cppsql::mySQLTypeAsString(fields[columnNameIndex].type)
 					<< ", " << fields[columnNameIndex].length
 					<< ", " << fields[columnNameIndex].max_length
 					<< "\n";
@@ -81,7 +81,7 @@ void mySQLBackup( const char* host, const char* user, const char* password, cons
 				else createStatementSQL+="'";
 				createStatementSQL+=fields[columnNameIndex].name;
 				createStatementSQL+="' ";
-				createStatementSQL+=cppsql::sqlTypeString(fields[columnNameIndex]);
+				createStatementSQL+=cppsql::mySqlTypeString(fields[columnNameIndex]);
 			}
 			createStatementSQL+=")";
 			outputDatabase.execute("BEGIN TRANSACTION");
@@ -104,7 +104,7 @@ void mySQLBackup( const char* host, const char* user, const char* password, cons
 				for( int columnNameIndex=0; columnNameIndex<numberOfFields; ++columnNameIndex )
 				{
 					//std::cout << (columnNameIndex==0 ? "  " : ", ") << fields[columnNameIndex].name << "=" << BufferDump(results[columnNameIndex]);
-					cppsql::bindToSQLite( results[columnNameIndex], insertStatement, columnNameIndex );
+					cppsql::bindMySQLToSQLite( results[columnNameIndex], insertStatement, columnNameIndex );
 				}
 				//std::cout << "\n";
 				insertStatement.step();

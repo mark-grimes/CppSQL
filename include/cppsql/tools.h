@@ -6,10 +6,10 @@
 
 namespace cppsql
 {
-	const char* sqlTypeString( const MYSQL_FIELD& field );
-	void bindToSQLite( const MYSQL_BIND& bind, cppsql::SQLiteStatement& statement, const int fieldNumber );
+	const char* mySqlTypeString( const MYSQL_FIELD& field );
+	void bindMySQLToSQLite( const MYSQL_BIND& bind, cppsql::SQLiteStatement& statement, const int fieldNumber );
 	/** @brief MySQL type as a string */
-	const char* typeAsString( int type );
+	const char* mySQLTypeAsString( int type );
 } // end of namespace cppsql
 
 #endif
