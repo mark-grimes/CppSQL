@@ -1,5 +1,5 @@
-#ifndef INCLUDEGUARD_cppsql_tools_h
-#define INCLUDEGUARD_cppsql_tools_h
+#ifndef INCLUDEGUARD_cppsql_misc_h
+#define INCLUDEGUARD_cppsql_misc_h
 
 #include <mysql.h>
 #include "cppsql/SQLiteStatement.h"
