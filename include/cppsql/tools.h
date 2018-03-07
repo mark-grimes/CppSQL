@@ -4,7 +4,7 @@
 
 namespace cppsql
 {
-	void mySQLBackup( const char* host, const char* user, const char* password, const char* database, const char* outputFile );
+	void mySQLToSQLiteBackup( const char* host, const char* user, const char* password, const char* database, const char* outputFile );
 } // end of namespace cppsql
 
 #endif

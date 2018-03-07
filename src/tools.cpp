@@ -4,7 +4,7 @@
 #include "cppsql/misc.h"
 #include <iostream>
 
-void cppsql::mySQLBackup( const char* host, const char* user, const char* password, const char* database, const char* outputFile )
+void cppsql::mySQLToSQLiteBackup( const char* host, const char* user, const char* password, const char* database, const char* outputFile )
 {
 	cppsql::MySQLDatabase inputDatabase( host, user, password, database );
 	cppsql::SQLiteDatabase outputDatabase( outputFile );

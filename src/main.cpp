@@ -19,7 +19,7 @@ int main( int argc, const char* argv[] )
 			<< "Database password = " << *args[2] << "\n"
 			<< "Database database = " << *args[3] << "\n"
 			<< "Output filename   = " << *args[4] << "\n";
-		cppsql::mySQLBackup( *args[0], *args[1], *args[2], *args[3], *args[4] );
+		cppsql::mySQLToSQLiteBackup( *args[0], *args[1], *args[2], *args[3], *args[4] );
 	}
 	catch( const std::exception& error )
 	{
