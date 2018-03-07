@@ -21,6 +21,19 @@ cppsql::MySQLDatabase::~MySQLDatabase()
 	mysql_close(pDatabase_);
 }
 
+std::vector<std::string> cppsql::MySQLDatabase::tableNames() const
+{
+	std::vector<std::string> returnValue;
+	cppsql::MySQLResult tableNamesResult( mysql_list_tables( pDatabase_, nullptr ) );
+	MYSQL_ROW tableNames;
+	while( (tableNames=mysql_fetch_row(tableNamesResult)) )
+	{
+		returnValue.emplace_back( tableNames[0] );
+	} // end of loop over table names
+
+	return returnValue;
+}
+
 void cppsql::MySQLDatabase::execute( const char* pCommand )
 {
 	//std::cout << "Executing command " << pCommand << std::endl;

@@ -16,6 +16,7 @@ namespace cppsql
 		SQLiteDatabase( const std::string& filename ) : SQLiteDatabase(filename.c_str()) {}
 		~SQLiteDatabase();
 
+		virtual std::vector<std::string> tableNames() const override;
 		virtual void execute( const char* pCommand ) override;
 		virtual void execute( const char* pCommand, std::function<bool(int,const char* const[],const char* const[])> resultsCallback ) override;
 		cppsql::SQLiteStatement prepareStatement( const char* pStatement );

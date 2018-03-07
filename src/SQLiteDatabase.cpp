@@ -16,6 +16,21 @@ cppsql::SQLiteDatabase::~SQLiteDatabase()
 	sqlite3_close( pDatabase_ );
 }
 
+std::vector<std::string> cppsql::SQLiteDatabase::tableNames() const
+{
+	std::vector<std::string> returnValue;
+
+	// Horrible dirty trick so that I can call the non-const execute method
+	const_cast<cppsql::SQLiteDatabase*>(this)->execute("SELECT name FROM sqlite_master WHERE type='table'",
+		[&returnValue]( int numFields, const char* const value[], const char* const fieldName[] )
+		{
+			returnValue.emplace_back( value[0] );
+			return true;
+		});
+
+	return returnValue;
+}
+
 void cppsql::SQLiteDatabase::execute( const char* pCommand )
 {
 	execute_( pCommand, nullptr );

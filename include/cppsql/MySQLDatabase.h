@@ -16,6 +16,7 @@ namespace cppsql
 		MySQLDatabase( const char* host, const char* user, const char* password, const char* database );
 		~MySQLDatabase();
 
+		virtual std::vector<std::string> tableNames() const override;
 		virtual void execute( const char* pCommand ) override;
 		cppsql::MySQLResult execute_new( const char* pCommand );
 		virtual void execute( const char* pCommand, std::function<bool(int,const char* const[],const char* const[])> resultsCallback ) override;

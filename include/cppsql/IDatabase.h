@@ -2,6 +2,8 @@
 #define INCLUDEGUARD_cppsql_IDatabase_h
 
 #include <functional>
+#include <vector>
+#include <string>
 
 namespace cppsql
 {
@@ -13,7 +15,7 @@ namespace cppsql
 	{
 	public:
 		~IDatabase() {}
-
+		virtual std::vector<std::string> tableNames() const = 0;
 		virtual void execute( const char* pCommand ) = 0;
 		virtual void execute( const char* pCommand, std::function<bool(int,const char* const[],const char* const[])> resultsCallback ) = 0;
 	};
