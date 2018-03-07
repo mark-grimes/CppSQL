@@ -21,7 +21,7 @@ void cppsql::SQLiteDatabase::execute( const char* pCommand )
 	execute_( pCommand, nullptr );
 }
 
-void cppsql::SQLiteDatabase::execute( const char* pCommand, std::function<bool(int,int,char*,char*)> resultsCallback )
+void cppsql::SQLiteDatabase::execute( const char* pCommand, std::function<bool(int,const char* const[],const char* const[])> resultsCallback )
 {
 	execute_( pCommand, &resultsCallback );
 }
@@ -53,13 +53,9 @@ cppsql::SQLiteStatement cppsql::SQLiteDatabase::prepareStatement( const char* pC
 int cppsql::SQLiteDatabase::callback_( void* pMyFunction, int argc, char** argv, char** azColName )
 {
 	if( pMyFunction==nullptr ) return 0;
-	std::function<bool(int,int,char*,char*)>& callback=*reinterpret_cast<std::function<bool(int,int,char*,char*)>*>(pMyFunction);
+	std::function<bool(int,const char* const[],const char* const[])>& callback=*reinterpret_cast<std::function<bool(int,const char* const[],const char* const[])>*>(pMyFunction);
 
-	bool keepGoing=true;
-	for( int index=0; index<argc && keepGoing; ++index )
-	{
-		keepGoing=callback( index, argc, argv[index], azColName[index] );
-	}
+	bool keepGoing=callback( argc, argv, azColName );
 
 	return (keepGoing ? 0 : 1);
 }

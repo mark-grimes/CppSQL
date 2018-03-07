@@ -36,7 +36,7 @@ cppsql::MySQLResult cppsql::MySQLDatabase::execute_new( const char* pCommand )
 	return MySQLResult( mysql_store_result(pDatabase_) );
 }
 
-void cppsql::MySQLDatabase::execute( const char* pCommand, std::function<bool(int,int,char*,char*)> resultsCallback )
+void cppsql::MySQLDatabase::execute( const char* pCommand, std::function<bool(int,const char* const[],const char* const[])> resultsCallback )
 {
 	execute( pCommand );
 
@@ -49,15 +49,15 @@ void cppsql::MySQLDatabase::execute( const char* pCommand, std::function<bool(in
 	int num_fields=mysql_num_fields(result);
 	MYSQL_FIELD* fields=mysql_fetch_fields(result);
 
+	std::vector<const char*> fieldNames(num_fields);
+	for( size_t index=0; index<num_fields; ++index ) fieldNames[index]=fields[index].name;
+
 	MYSQL_ROW row;
 
 	bool keepGoing=true;
 	while( (row=mysql_fetch_row(result)) && keepGoing )
 	{
-		for( int fieldIndex=0; fieldIndex<num_fields && keepGoing; ++fieldIndex )
-		{
-			keepGoing=resultsCallback( fieldIndex, num_fields, row[fieldIndex], fields[fieldIndex].name );
-		}
+		keepGoing=resultsCallback( num_fields, row, fieldNames.data() );
 	}
 }
 

@@ -17,7 +17,7 @@ namespace cppsql
 
 		void execute( const char* pCommand );
 		cppsql::MySQLResult execute_new( const char* pCommand );
-		void execute( const char* pCommand, std::function<bool(int,int,char*,char*)> resultsCallback );
+		void execute( const char* pCommand, std::function<bool(int,const char* const[],const char* const[])> resultsCallback );
 		cppsql::MySQLStatement prepareStatement( const char* pStatement );
 		MYSQL* rawHandle() { return pDatabase_; }
 	private:

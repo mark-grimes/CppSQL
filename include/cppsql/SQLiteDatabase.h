@@ -16,7 +16,7 @@ namespace cppsql
 		~SQLiteDatabase();
 
 		void execute( const char* pCommand );
-		void execute( const char* pCommand, std::function<bool(int,int,char*,char*)> resultsCallback );
+		void execute( const char* pCommand, std::function<bool(int,const char* const[],const char* const[])> resultsCallback );
 		SQLiteStatement prepareStatement( const char* pStatement );
 	private:
 		void execute_( const char* pCommand, void* userCallback );
