@@ -2,7 +2,7 @@
 #include "cppsql/version.h"
 #include "cppsql/MySQLDatabase.h"
 #include "cppsql/SQLiteDatabase.h"
-#include "cppsql/tools.h"
+#include "cppsql/misc.h"
 #include <mysql.h>
 
 void mySQLBackup( const char* host, const char* user, const char* password, const char* database, const char* outputFile );

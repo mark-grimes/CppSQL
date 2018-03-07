@@ -1,4 +1,4 @@
-#include "cppsql/tools.h"
+#include "cppsql/misc.h"
 #include <stdexcept>
 
 const char* cppsql::mySqlTypeString( const MYSQL_FIELD& field )
