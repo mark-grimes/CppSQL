@@ -81,3 +81,32 @@ const char* cppsql::mySQLTypeAsString( int type )
 		default: return "<unknown>";
 	}
 }
+
+bool cppsql::parseSQLAlchemyURL( const char* url, std::string& mysqlHost, std::string& mysqlUsername, std::string& mysqlPassword, std::string& mysqlDatabase, std::string& sqliteFilename )
+{
+	return cppsql::parseSQLAlchemyURL( std::string(url), mysqlHost, mysqlUsername, mysqlPassword, mysqlDatabase, sqliteFilename );
+}
+
+bool cppsql::parseSQLAlchemyURL( const std::string& url, std::string& mysqlHost, std::string& mysqlUsername, std::string& mysqlPassword, std::string& mysqlDatabase, std::string& sqliteFilename )
+{
+	if( url.find("mysql://")==0 )
+	{
+		return false;
+	}
+	else if( url.find("sqlite://")==0 )
+	{
+		if( url.size()==9 ) // url is exactly "sqlite://"
+		{
+			sqliteFilename=":memory:";
+			return true;
+		}
+
+		if( url.size()<11 ) return false; // need to have at least '/'+one character
+
+		if( url[9]!='/' ) return false;
+
+		sqliteFilename=url.substr(10);
+		return true;
+	}
+	else return false;
+}
