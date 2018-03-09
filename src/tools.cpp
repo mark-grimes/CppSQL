@@ -87,3 +87,24 @@ void cppsql::mySQLToSQLiteBackup( const char* host, const char* user, const char
 		} // end of loop over fields in the table names call (pretty sure there is only one)
 	} // end of loop over table names
 } // end of function mySQLBackup
+
+std::unique_ptr<cppsql::IDatabase> cppsql::openDatabase( const char* url )
+{
+	// The URL parsing requires std::string anyway, so convert to that rather than
+	// the std::string overload call this one.
+	return openDatabase( std::string(url) );
+}
+
+std::unique_ptr<cppsql::IDatabase> cppsql::openDatabase( const std::string& url )
+{
+	std::string mysqlHost, mysqlUsername, mysqlPassword, mysqlDatabase, sqliteFilename;
+	if( !cppsql::parseSQLAlchemyURL( url, mysqlHost, mysqlUsername, mysqlPassword, mysqlDatabase, sqliteFilename ) )
+	{
+		return nullptr;
+	}
+	else
+	{
+		if( !sqliteFilename.empty() ) return std::unique_ptr<cppsql::IDatabase>( new cppsql::SQLiteDatabase(sqliteFilename) );
+		else return std::unique_ptr<cppsql::IDatabase>( new cppsql::MySQLDatabase( mysqlHost.c_str(), mysqlUsername.c_str(), mysqlPassword.c_str(), mysqlDatabase.c_str() ) );
+	}
+}
