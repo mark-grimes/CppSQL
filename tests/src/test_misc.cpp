@@ -63,5 +63,25 @@ SCENARIO( "Test that the cppsql::parseSQLAlchemyURL function works properly", "[
 			CHECK( mysqlDatabase=="database" );
 			CHECK( sqliteFilename.empty() );
 		}
+		WHEN( "Testing MySQL parsing" )
+		{
+			CHECK_NOTHROW( result=cppsql::parseSQLAlchemyURL("mysql://username@host/database", mysqlHost, mysqlUsername, mysqlPassword, mysqlDatabase, sqliteFilename) );
+			CHECK( result==true );
+			CHECK( mysqlUsername=="username" );
+			CHECK( mysqlPassword.empty() );
+			CHECK( mysqlHost=="host" );
+			CHECK( mysqlDatabase=="database" );
+			CHECK( sqliteFilename.empty() );
+		}
+		WHEN( "Testing MySQL parsing" )
+		{
+			CHECK_NOTHROW( result=cppsql::parseSQLAlchemyURL("mysql://host/database", mysqlHost, mysqlUsername, mysqlPassword, mysqlDatabase, sqliteFilename) );
+			CHECK( result==true );
+			CHECK( mysqlUsername.empty() );
+			CHECK( mysqlPassword.empty() );
+			CHECK( mysqlHost=="host" );
+			CHECK( mysqlDatabase=="database" );
+			CHECK( sqliteFilename.empty() );
+		}
 	}
 } // end of 'Test ... cppsql::parseSQLAlchemyURL'

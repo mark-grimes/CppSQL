@@ -91,7 +91,32 @@ bool cppsql::parseSQLAlchemyURL( const std::string& url, std::string& mysqlHost,
 {
 	if( url.find("mysql://")==0 )
 	{
-		return false;
+		if( url.size()<9 ) return false; // need to have at least one character
+		size_t currentPosition=8;
+		// Look for '@' symbol, if none found then no username or password
+		size_t findResult=url.find( '@', currentPosition );
+		if( findResult!=std::string::npos )
+		{
+			size_t hostStart=findResult+1;
+			// Look for ':' to delimit username and password
+			findResult=url.find( ":", currentPosition );
+			if( findResult!=std::string::npos && findResult<hostStart )
+			{
+				mysqlUsername=url.substr( currentPosition, findResult-currentPosition );
+				mysqlPassword=url.substr( findResult+1, hostStart-findResult-2 );
+			}
+			else mysqlUsername=url.substr( currentPosition, hostStart-currentPosition-1 );
+			currentPosition=hostStart;
+		}
+		// Look for '/' symbol to delimit host and database
+		findResult=url.find( '/', currentPosition );
+		if( findResult!=std::string::npos )
+		{
+			mysqlHost=url.substr( currentPosition, findResult-currentPosition );
+			mysqlDatabase=url.substr( findResult+1 );
+		}
+		else mysqlHost=url.substr( currentPosition );
+		return true;
 	}
 	else if( url.find("sqlite://")==0 )
 	{
