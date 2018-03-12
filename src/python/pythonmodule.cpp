@@ -9,7 +9,7 @@ static PyObject* cppsql_mySQLToSQLiteBackup( PyObject *self, PyObject *args, PyO
 	const char* password="root";
 	const char* database="ethoscope_db";
 	const char* outputFile="testdb.sqlite";
-	static const char* keywordList[]={"host","user","password","database","outputFile"};
+	static const char* keywordList[]={"host","user","password","database","outputFile",nullptr};
 	// Parse the arguments
 	if( !PyArg_ParseTupleAndKeywords( args, keywords, "|sssss", const_cast<char**>(keywordList),
 		&host, &user, &password, &database, &outputFile ) ) return nullptr;
