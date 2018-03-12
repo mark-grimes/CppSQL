@@ -60,5 +60,5 @@ if( BUILD_PYTHON )
 	# Fix the test configuration file to have the correct paths
 	configure_file( "${PROJECT_SOURCE_DIR}/src/python/setup.py.in" "${PROJECT_BINARY_DIR}/python/src/setup.py" @ONLY )
 	message("MYSQL_LIBRARIES=${MYSQL_LIBRARIES}")
-	add_custom_target( CreatePythonModule ALL "python" "${PROJECT_BINARY_DIR}/python/src/setup.py" "build" )
+	add_custom_target( CreatePythonModule ALL "python" "${PROJECT_BINARY_DIR}/python/src/setup.py" "build" DEPENDS ${PROJECT_NAME}_LIB )
 endif()

@@ -4,7 +4,7 @@ module1 = Extension('cppsql',
                     sources = ['@PROJECT_SOURCE_DIR@/src/python/pythonmodule.cpp'],
                     libraries = ['sqlite3'],
                     extra_compile_args=['-std=c++11','-I@PROJECT_SOURCE_DIR@/include'],
-                    extra_link_args=['@MYSQL_LIBRARIES@'] )
+                    extra_link_args=['@MYSQL_LIBRARIES@','@PROJECT_BINARY_DIR@/libCppSQL_LIB.a'] )
 
 setup (name = 'cppsql',
        version = '0.1',
