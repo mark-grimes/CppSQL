@@ -1,0 +1,12 @@
+from distutils.core import setup, Extension
+
+module1 = Extension('cppsql',
+                    sources = ['@PROJECT_SOURCE_DIR@/src/python/pythonmodule.cpp'],
+                    libraries = ['sqlite3'],
+                    extra_compile_args=['-std=c++11','-I@PROJECT_SOURCE_DIR@/include'],
+                    extra_link_args=['@MYSQL_LIBRARIES@'] )
+
+setup (name = 'cppsql',
+       version = '0.1',
+       description = 'This is a demo package',
+       ext_modules = [module1])

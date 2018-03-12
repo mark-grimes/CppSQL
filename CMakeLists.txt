@@ -53,3 +53,12 @@ if( BUILD_UNITTESTS )
 	add_executable( ${PROJECT_NAME}Tests ${unittests_sources} "${PROJECT_BINARY_DIR}/tests/src/testinputs.cpp" )
 	target_link_libraries( ${PROJECT_NAME}Tests ${PROJECT_NAME}_LIB )
 endif()
+
+option( BUILD_PYTHON "Build python module" ON )
+message( STATUS "BUILD_PYTHON: ${BUILD_PYTHON}" )
+if( BUILD_PYTHON )
+	# Fix the test configuration file to have the correct paths
+	configure_file( "${PROJECT_SOURCE_DIR}/src/python/setup.py.in" "${PROJECT_BINARY_DIR}/python/src/setup.py" @ONLY )
+	message("MYSQL_LIBRARIES=${MYSQL_LIBRARIES}")
+	add_custom_target( CreatePythonModule ALL "python" "${PROJECT_BINARY_DIR}/python/src/setup.py" "build" )
+endif()
