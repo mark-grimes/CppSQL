@@ -20,7 +20,7 @@ static PyObject* cppsql_mySQLToSQLiteBackup( PyObject *self, PyObject *args, PyO
 }
 
 static PyMethodDef SqlitedumpMethods[] = {
-	{ "mySQLBackup", (PyCFunction)cppsql_mySQLToSQLiteBackup, METH_VARARGS | METH_KEYWORDS, "Backup a MySQL database to a SQLite file" },
+	{ "mySQLToSQLiteBackup", (PyCFunction)cppsql_mySQLToSQLiteBackup, METH_VARARGS | METH_KEYWORDS, "Backup a MySQL database to a SQLite file" },
 	{ NULL, NULL, 0, NULL }
 };
 

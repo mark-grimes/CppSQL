@@ -61,7 +61,7 @@ if( BUILD_PYTHON )
 	configure_file( "${PROJECT_SOURCE_DIR}/src/python/setup.py.in" "${PROJECT_BINARY_DIR}/python/src/setup.py" @ONLY )
 	add_custom_target( CreatePythonModule ALL "python" "${PROJECT_BINARY_DIR}/python/src/setup.py" "build" DEPENDS ${PROJECT_NAME}_LIB )
 	if(APPLE)
-		# Mac OS X will show "unsafe use of relative rpath...", so need to change the
+		# Mac OS X will give "unsafe use of relative rpath..." errors, so need to change the
 		# relative path to an absolute path for the MySQL library.
 		get_filename_component( LIB_DIRECTORY ${MYSQL_LIBRARIES} DIRECTORY )
 		get_filename_component( LIB_NAME ${MYSQL_LIBRARIES} NAME )
@@ -74,7 +74,7 @@ if( BUILD_PYTHON )
 			endif()
 		endwhile()
 
-		# This is the important bit, everything else was to get the variable for this call
+		# This is the important bit, everything else was to get the variables for this call
 		add_custom_target( FixPythonModuleRPath ALL
 			"install_name_tool" "-change" "${LIB_NAME}" "${LIB_DIRECTORY}/${LIB_NAME}" "${PROJECT_BINARY_DIR}/build/lib*/cppsql.so"
 			DEPENDS CreatePythonModule )
