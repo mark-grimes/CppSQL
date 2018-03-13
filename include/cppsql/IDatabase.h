@@ -14,7 +14,7 @@ namespace cppsql
 	class IDatabase
 	{
 	public:
-		~IDatabase() {}
+		virtual ~IDatabase() {}
 		virtual std::vector<std::string> tableNames() const = 0;
 		virtual void execute( const char* pCommand ) = 0;
 		virtual void execute( const char* pCommand, std::function<bool(int,const char* const[],const char* const[])> resultsCallback ) = 0;
