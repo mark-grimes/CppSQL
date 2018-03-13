@@ -21,15 +21,15 @@ namespace cppsql
 		sqlite3* pDatabase_; // required to get error messages
 	};
 
+	// Explicit template instantiations
+	template<> void SQLiteStatement::bind( const double value, int position );
+	template<> void SQLiteStatement::bind( const float value, int position );
+	template<> void SQLiteStatement::bind( const int value, int position );
+	template<> void SQLiteStatement::bind( const short value, int position );
+	template<> void SQLiteStatement::bind( const char* value, int position );
+	/// Note that this function is for MYSQL_TYPE_TINY, i.e. a single byte
+	template<> void SQLiteStatement::bind( const signed char value, int position );
+	template<> void SQLiteStatement::bind( const void* value, int position, int size );
 } // end of namespace cppsql
-
-template<> void cppsql::SQLiteStatement::bind( const double value, int position );
-template<> void cppsql::SQLiteStatement::bind( const float value, int position );
-template<> void cppsql::SQLiteStatement::bind( const int value, int position );
-template<> void cppsql::SQLiteStatement::bind( const short value, int position );
-template<> void cppsql::SQLiteStatement::bind( const char* value, int position );
-/// Note that this function is for MYSQL_TYPE_TINY, i.e. a single byte, not a pointer to an array of bytes
-template<> void cppsql::SQLiteStatement::bind( const signed char value, int position );
-template<> void cppsql::SQLiteStatement::bind( const void* value, int position, int size );
 
 #endif

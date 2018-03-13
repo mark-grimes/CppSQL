@@ -7,7 +7,7 @@ find_path( MYSQL_INCLUDE_DIR
 		  "/usr/mysql/include/mysql" )
 
 find_library( MYSQL_LIBRARY
-	NAMES "mysql" "mariadb"
+	NAMES "mysql" "mariadb" "mysqlclient" "mariadbclient"
 	PATHS "${MYSQL_ROOT}/lib/mysql"
 		  "${MYSQL_ROOT}/lib/mariadb"
 		  "/lib/mysql"

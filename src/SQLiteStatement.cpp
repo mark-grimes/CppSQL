@@ -1,4 +1,5 @@
 #include "cppsql/SQLiteStatement.h"
+#include <stdexcept>
 #include "cppsql/errorcodes.h"
 
 cppsql::SQLiteStatement::SQLiteStatement( sqlite3_stmt* pStatement, sqlite3* pDatabase )

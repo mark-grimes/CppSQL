@@ -1,4 +1,5 @@
 #include "cppsql/MySQLStatement.h"
+#include <stdexcept>
 
 cppsql::MySQLStatement::MySQLStatement( MYSQL_STMT* pStatement )
 	: pStatement_(pStatement)

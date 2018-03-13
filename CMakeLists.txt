@@ -32,6 +32,7 @@ find_package( MYSQL REQUIRED )
 include_directories( ${MYSQL_INCLUDE_DIRS} )
 
 add_library( ${PROJECT_NAME}_LIB STATIC ${library_sources} "${CMAKE_BINARY_DIR}/src/version.cpp" )
+set_property( TARGET ${PROJECT_NAME}_LIB PROPERTY POSITION_INDEPENDENT_CODE ON )
 target_link_libraries( ${PROJECT_NAME}_LIB "sqlite3" ${MYSQL_LIBRARIES} )
 add_executable( ${PROJECT_NAME} "${CMAKE_SOURCE_DIR}/src/main.cpp" )
 target_link_libraries( ${PROJECT_NAME} ${PROJECT_NAME}_LIB )
@@ -57,6 +58,9 @@ endif()
 option( BUILD_PYTHON "Build python module" ON )
 message( STATUS "BUILD_PYTHON: ${BUILD_PYTHON}" )
 if( BUILD_PYTHON )
+	if(NOT APPLE)
+		set( PLATFORM_SPECIFIC_NO_AS_NEEDED "'-Wl,--no-as-needed',")
+	endif() # For apple just leave the PLATFORM_SPECIFIC_NO_AS_NEEDED string empty
 	# Fix the test configuration file to have the correct paths
 	configure_file( "${PROJECT_SOURCE_DIR}/src/python/setup.py.in" "${PROJECT_BINARY_DIR}/python/src/setup.py" @ONLY )
 	add_custom_target( CreatePythonModule ALL "python" "${PROJECT_BINARY_DIR}/python/src/setup.py" "build" DEPENDS ${PROJECT_NAME}_LIB )
