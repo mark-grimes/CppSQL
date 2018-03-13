@@ -144,12 +144,37 @@ static PyObject* cppsql_databaseExecute( PyObject *self, PyObject *args, PyObjec
 	return executeOnDatabase_( *pDatabase, sqlQuery, pCallback );
 }
 
+static PyObject* cppsql_databaseTableNames( PyObject *self, PyObject *args, PyObject *keywords )
+{
+	size_t address;
+	static const char* keywordList[]={"database",nullptr};
+	if( !PyArg_ParseTupleAndKeywords( args, keywords, "l", const_cast<char**>(keywordList), &address ) ) return nullptr;
+
+	cppsql::IDatabase* pDatabase=reinterpret_cast<cppsql::IDatabase*>(address);
+	if( pDatabase==nullptr )
+	{
+		PyErr_SetString(PyExc_ValueError, "database address is null");
+		return nullptr;
+	}
+
+	auto tableNames=pDatabase->tableNames();
+	PyObject* pReturnValue=PyList_New( tableNames.size() );
+	for( size_t index=0; index<tableNames.size(); ++index )
+	{
+		PyObject* pythonString=PyString_FromString( tableNames[index].c_str() );
+		PyList_SET_ITEM( pReturnValue, index, pythonString );
+	}
+
+	return pReturnValue;
+}
+
 static PyMethodDef SqlitedumpMethods[] = {
 	{ "mySQLToSQLiteBackup", (PyCFunction)cppsql_mySQLToSQLiteBackup, METH_VARARGS | METH_KEYWORDS, "Backup a MySQL database to a SQLite file" },
 	{ "executeOnDatabase", (PyCFunction)cppsql_executeOnDatabase, METH_VARARGS | METH_KEYWORDS, "Execute an SQL query string on a database" },
 	{ "databaseOpen", (PyCFunction)cppsql_databaseOpen, METH_VARARGS | METH_KEYWORDS, "Open a database at the given location" },
 	{ "databaseClose", (PyCFunction)cppsql_databaseClose, METH_VARARGS | METH_KEYWORDS, "Close the database" },
 	{ "databaseExecute", (PyCFunction)cppsql_databaseExecute, METH_VARARGS | METH_KEYWORDS, "Execute an SQL query on the previously opened database" },
+	{ "databaseTableNames", (PyCFunction)cppsql_databaseTableNames, METH_VARARGS | METH_KEYWORDS, "Get the names of the tables in the database" },
 	{ NULL, NULL, 0, NULL }
 };
 
