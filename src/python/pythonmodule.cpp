@@ -20,33 +20,15 @@ static PyObject* cppsql_mySQLToSQLiteBackup( PyObject *self, PyObject *args, PyO
 	Py_RETURN_NONE;
 }
 
-static PyObject* cppsql_executeOnDatabase( PyObject *self, PyObject *args, PyObject *keywords )
+// Note this is not exported, but used by cppsql_executeOnDatabase and cppsql_databaseExecute
+PyObject* executeOnDatabase_( cppsql::IDatabase& database, const char* sqlQuery, PyObject* pCallback )
 {
-	const char* location;
-	const char* sqlQuery;
-	PyObject* pCallback;
-	static const char* keywordList[]={"location","sqlQuery","callback",nullptr};
-	if( !PyArg_ParseTupleAndKeywords( args, keywords, "ssO", const_cast<char**>(keywordList),
-		&location, &sqlQuery, &pCallback ) ) return nullptr;
-	if( !PyCallable_Check(pCallback) )
-	{
-		PyErr_SetString(PyExc_TypeError, "callback parameter must be callable");
-		return nullptr;
-	}
-	// Not going to increment reference count on pCallback because I finish with
-	// it before returning from this function.
-	auto pDatabase=cppsql::openDatabase( location );
-	if( pDatabase==nullptr )
-	{
-		PyErr_SetString(PyExc_ValueError, "database location is not valid");
-		return nullptr;
-	}
 	PyObject* pArguments=PyTuple_New(3);
 	PyObject* pNumFields=nullptr;
 	PyObject* pReturnValue=nullptr;
 	const char* const* oldValues=nullptr;
 	const char* const* oldFieldNames=nullptr;
-	pDatabase->execute( sqlQuery, [pCallback,pArguments,&pNumFields,&oldValues,&oldFieldNames,&pReturnValue](int numFields,const char* const values[],const char* const fieldNames[]){
+	database.execute( sqlQuery, [pCallback,pArguments,&pNumFields,&oldValues,&oldFieldNames,&pReturnValue](int numFields,const char* const values[],const char* const fieldNames[]){
 		if( pNumFields==nullptr )
 		{
 			pNumFields = PyLong_FromLong(numFields);
@@ -79,9 +61,95 @@ static PyObject* cppsql_executeOnDatabase( PyObject *self, PyObject *args, PyObj
 	Py_RETURN_NONE;
 }
 
+static PyObject* cppsql_executeOnDatabase( PyObject *self, PyObject *args, PyObject *keywords )
+{
+	const char* location;
+	const char* sqlQuery;
+	PyObject* pCallback;
+	static const char* keywordList[]={"location","sqlQuery","callback",nullptr};
+	if( !PyArg_ParseTupleAndKeywords( args, keywords, "ssO", const_cast<char**>(keywordList),
+		&location, &sqlQuery, &pCallback ) ) return nullptr;
+	if( !PyCallable_Check(pCallback) )
+	{
+		PyErr_SetString(PyExc_TypeError, "callback parameter must be callable");
+		return nullptr;
+	}
+	// Not going to increment reference count on pCallback because I finish with
+	// it before returning from this function.
+	auto pDatabase=cppsql::openDatabase( location );
+	if( pDatabase==nullptr )
+	{
+		PyErr_SetString(PyExc_ValueError, "database location is not valid");
+		return nullptr;
+	}
+
+	return executeOnDatabase_( *pDatabase, sqlQuery, pCallback );
+}
+
+static PyObject* cppsql_databaseOpen( PyObject *self, PyObject *args, PyObject *keywords )
+{
+	const char* location;
+	static const char* keywordList[]={"location",nullptr};
+	if( !PyArg_ParseTupleAndKeywords( args, keywords, "s", const_cast<char**>(keywordList), &location ) ) return nullptr;
+
+	auto pDatabase=cppsql::openDatabase( location );
+	if( pDatabase==nullptr )
+	{
+		PyErr_SetString(PyExc_ValueError, "database location is not valid");
+		return nullptr;
+	}
+
+	PyObject* pReturnValue=PyInt_FromLong( reinterpret_cast<size_t>(pDatabase.get()) );
+	pDatabase.release(); // Turn to a raw pointer because python now has ownership
+	return pReturnValue;
+}
+
+static PyObject* cppsql_databaseClose( PyObject *self, PyObject *args, PyObject *keywords )
+{
+	size_t address;
+	static const char* keywordList[]={"database",nullptr};
+	if( !PyArg_ParseTupleAndKeywords( args, keywords, "l", const_cast<char**>(keywordList), &address ) ) return nullptr;
+
+	cppsql::IDatabase* pDatabase=reinterpret_cast<cppsql::IDatabase*>(address);
+	if( pDatabase==nullptr )
+	{
+		PyErr_SetString(PyExc_ValueError, "database address is null");
+		return nullptr;
+	}
+
+	delete pDatabase;
+	Py_RETURN_NONE;
+}
+
+static PyObject* cppsql_databaseExecute( PyObject *self, PyObject *args, PyObject *keywords )
+{
+	size_t address;
+	const char* sqlQuery;
+	PyObject* pCallback;
+	static const char* keywordList[]={"database","sqlQuery","callback",nullptr};
+	if( !PyArg_ParseTupleAndKeywords( args, keywords, "lsO", const_cast<char**>(keywordList), &address, &sqlQuery, &pCallback ) ) return nullptr;
+	if( !PyCallable_Check(pCallback) )
+	{
+		PyErr_SetString(PyExc_TypeError, "callback parameter must be callable");
+		return nullptr;
+	}
+
+	cppsql::IDatabase* pDatabase=reinterpret_cast<cppsql::IDatabase*>(address);
+	if( pDatabase==nullptr )
+	{
+		PyErr_SetString(PyExc_ValueError, "database address is null");
+		return nullptr;
+	}
+
+	return executeOnDatabase_( *pDatabase, sqlQuery, pCallback );
+}
+
 static PyMethodDef SqlitedumpMethods[] = {
 	{ "mySQLToSQLiteBackup", (PyCFunction)cppsql_mySQLToSQLiteBackup, METH_VARARGS | METH_KEYWORDS, "Backup a MySQL database to a SQLite file" },
 	{ "executeOnDatabase", (PyCFunction)cppsql_executeOnDatabase, METH_VARARGS | METH_KEYWORDS, "Execute an SQL query string on a database" },
+	{ "databaseOpen", (PyCFunction)cppsql_databaseOpen, METH_VARARGS | METH_KEYWORDS, "Open a database at the given location" },
+	{ "databaseClose", (PyCFunction)cppsql_databaseClose, METH_VARARGS | METH_KEYWORDS, "Close the database" },
+	{ "databaseExecute", (PyCFunction)cppsql_databaseExecute, METH_VARARGS | METH_KEYWORDS, "Execute an SQL query on the previously opened database" },
 	{ NULL, NULL, 0, NULL }
 };
 
