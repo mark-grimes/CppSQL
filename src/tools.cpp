@@ -2,6 +2,7 @@
 #include "cppsql/MySQLDatabase.h"
 #include "cppsql/SQLiteDatabase.h"
 #include "cppsql/misc.h"
+#include "cppsql/errorcodes.h"
 #include <iostream>
 
 void cppsql::mySQLToSQLiteBackup( const char* host, const char* user, const char* password, const char* database, const char* outputFile )

@@ -23,8 +23,6 @@ namespace cppsql
 
 } // end of namespace cppsql
 
-#include "cppsql/errorcodes.h"
-
 template<> void cppsql::SQLiteStatement::bind( const double value, int position );
 template<> void cppsql::SQLiteStatement::bind( const float value, int position );
 template<> void cppsql::SQLiteStatement::bind( const int value, int position );

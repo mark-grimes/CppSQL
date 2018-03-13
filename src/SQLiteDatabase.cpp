@@ -1,4 +1,5 @@
 #include "cppsql/SQLiteDatabase.h"
+#include "cppsql/errorcodes.h"
 
 cppsql::SQLiteDatabase::SQLiteDatabase( const char* pFilename )
 	: pDatabase_(nullptr)
@@ -61,7 +62,7 @@ cppsql::SQLiteStatement cppsql::SQLiteDatabase::prepareStatement( const char* pC
 	int result;
 	if( (result=sqlite3_prepare_v2( pDatabase_, pCommand, std::char_traits<char>::length(pCommand), &pStatement, NULL ))!=SQLITE_OK )
 	{
-		throw std::runtime_error( std::string("Can't prepare SQLiteStatement '")+pCommand+"': "+liteResultCodeToString(result) );
+		throw std::runtime_error( std::string("Can't prepare SQLiteStatement '")+pCommand+"': "+cppsql::liteResultCodeToString(result) );
 	}
 	return SQLiteStatement( pStatement, pDatabase_ );
 }

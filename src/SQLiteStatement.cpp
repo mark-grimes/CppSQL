@@ -1,4 +1,5 @@
 #include "cppsql/SQLiteStatement.h"
+#include "cppsql/errorcodes.h"
 
 cppsql::SQLiteStatement::SQLiteStatement( sqlite3_stmt* pStatement, sqlite3* pDatabase )
 	: pStatement_(pStatement), pDatabase_(pDatabase)
@@ -21,7 +22,7 @@ void cppsql::SQLiteStatement::step()
 	int result;
 	if( (result=sqlite3_step(pStatement_))!=SQLITE_DONE )
 	{
-		throw std::runtime_error( std::string("Can't step SQLiteStatement: ")+liteResultCodeToString(result) );
+		throw std::runtime_error( std::string("Can't step SQLiteStatement: ")+cppsql::liteResultCodeToString(result) );
 	}
 }
 
